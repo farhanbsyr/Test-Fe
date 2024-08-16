@@ -29,59 +29,61 @@
       </div>
       <div v-for="data in usedData" :key="data.id" class="row">
         <div v-for="(item, index) in data.data" :key="index + 1" class="col">
-          <div class="title-unit align-items-center d-flex gap-2">
+          <div class="title-unit align-items-center d-flex gap-2 mb-1">
             <div class="icon-unit d-flex justify-content-center">
               <img src="../assets/images/unit-icon.svg" alt="icon unit" />
             </div>
             <h1 class="fs-6 m-0">{{ item.officeName }}</h1>
           </div>
-          <div
-            v-for="(room, index) in item.detailSummary"
-            :key="index + 1"
-            class="card-room bg-dasar rounded-2 d-flex flex-column gap-1"
-          >
-            <div class="title-room font-size-large">{{ room.roomName }}</div>
-            <div class="presentas row">
-              <div class="text-jumlah col-8">
-                <p class="m-0 font-size-small">Persentase Pemakaian</p>
+          <div class="d-flex flex-column wrapper-room">
+            <div
+              v-for="(room, index) in item.detailSummary"
+              :key="index + 1"
+              class="card-room bg-dasar rounded-2 d-flex flex-column gap-1"
+            >
+              <div class="title-room font-size-large">{{ room.roomName }}</div>
+              <div class="presentas row">
+                <div class="text-jumlah col-8">
+                  <p class="m-0 font-size-small">Persentase Pemakaian</p>
+                  <h1 class="font-size-larger fw-bolder">
+                    {{
+                      (room.averageOccupancyPerMonth / room.capacity).toFixed(2)
+                    }}
+                  </h1>
+                </div>
+                <div class="col-4 font-size-smaller">Diagramnya</div>
+              </div>
+              <div class="nominal">
+                <p class="m-0 font-size-small">Nominal Konsumsi</p>
                 <h1 class="font-size-larger fw-bolder">
-                  {{
-                    (room.averageOccupancyPerMonth / room.capacity).toFixed(2)
-                  }}
+                  {{ nominalTotal(room.totalConsumption) }}
                 </h1>
               </div>
-              <div class="col-4 font-size-smaller">Diagramnya</div>
-            </div>
-            <div class="nominal">
-              <p class="m-0 font-size-small">Nominal Konsumsi</p>
-              <h1 class="font-size-larger fw-bolder">
-                {{ nominalTotal(room.totalConsumption) }}
-              </h1>
-            </div>
-            <div
-              v-for="(snack, index) in room.totalConsumption"
-              :key="index + 1"
-              class="amount-snack d-flex flex-column gap-1"
-            >
-              <div class="snack-group row">
-                <h5
-                  class="font-size-small m-0 align-self-center fw-semibold col"
-                >
-                  {{ snack.name }}
-                </h5>
-                <div class="amount col">
-                  <label for="mySlide" class="font-size-medium">{{
-                    snack.totalPackage
-                  }}</label>
-                  <div class="pricing">
-                    <input
-                      type="range"
-                      min="0"
-                      :max="packageTotal(room.totalConsumption)"
-                      :value="parseInt(snack.totalPackage)"
-                      class="slider w-50"
-                      id="mySlider"
-                    />
+              <div
+                v-for="(snack, index) in room.totalConsumption"
+                :key="index + 1"
+                class="amount-snack d-flex flex-column gap-1"
+              >
+                <div class="snack-group row">
+                  <h5
+                    class="font-size-small m-0 align-self-center fw-semibold col"
+                  >
+                    {{ snack.name }}
+                  </h5>
+                  <div class="amount col">
+                    <label for="mySlide" class="font-size-medium">{{
+                      snack.totalPackage
+                    }}</label>
+                    <div class="pricing">
+                      <input
+                        type="range"
+                        min="0"
+                        :max="packageTotal(room.totalConsumption)"
+                        :value="parseInt(snack.totalPackage)"
+                        class="slider w-50"
+                        id="mySlider"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -147,5 +149,18 @@ async function getUsed() {
 .icon-unit {
   width: 24px;
   height: 24px;
+}
+.wrapper-room {
+  gap: 12px;
+}
+.card-room {
+  background-color: #f2f2f2;
+  padding: 12px;
+  gap: 12px;
+}
+.slider {
+  border-radius: 2px;
+  color: #00a3e9;
+  background: black;
 }
 </style>
