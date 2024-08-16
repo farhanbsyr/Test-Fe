@@ -67,11 +67,24 @@
               :key="index + 1"
               class="amount-snack d-flex flex-column gap-1"
             >
-              <div class="snack-group">
-                <h5 class="font-size-small fw-semibold">{{ snack.name }}</h5>
-                <div class="amount">
-                  <p class="font-size-medium">{{ snack.totalPackage }}</p>
-                  <div class="pricing"></div>
+              <div class="snack-group row">
+                <h5 class="font-size-small fw-semibold col">
+                  {{ snack.name }}
+                </h5>
+                <div class="amount col">
+                  <label for="mySlide" class="font-size-medium">{{
+                    snack.totalPackage
+                  }}</label>
+                  <div class="pricing">
+                    <input
+                      type="range"
+                      min="0"
+                      :max="packageTotal(room.totalConsumption)"
+                      :value="parseInt(snack.totalPackage)"
+                      class="slider w-50"
+                      id="mySlider"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,15 +123,14 @@ async function getUsed() {
     console.log(usedData.value);
   }
 }
-const filteredData = computed(() => {
-  if (toogleMonth.value) {
-    // Return hanya data dengan id === 2
-    return usedData.value.filter((data) => data.id === 2);
-  } else {
-    // Return semua data jika toogleMonth adalah false
-    return usedData.value.filter((data) => data.id === 1);
-  }
-});
+
+const packageTotal = (consumptions) => {
+  return consumptions.reduce(
+    (total, item) => total + parseInt(item.totalPackage),
+    0
+  );
+};
+console.log(packageTotal);
 </script>
 
 <style scoped>
