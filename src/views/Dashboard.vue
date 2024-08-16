@@ -56,7 +56,7 @@
               <div class="nominal">
                 <p class="m-0 font-size-small">Nominal Konsumsi</p>
                 <h1 class="font-size-larger fw-bolder">
-                  {{ nominalTotal(room.totalConsumption) }}
+                  {{ formattedNominal(nominalTotal(room.totalConsumption)) }}
                 </h1>
               </div>
               <div
@@ -104,6 +104,12 @@ const usedData = ref([]);
 
 const nominalTotal = (nominal) => {
   return nominal.reduce((total, item) => total + parseInt(item.totalPrice), 0);
+};
+const formattedNominal = (amount) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(amount);
 };
 
 const packageTotal = (consumptions) => {
