@@ -15,11 +15,22 @@ const participantCount = ref(0);
 const snackData = ref([]);
 const meetingStartTime = ref(0);
 const meetingEndTime = ref(0);
-const consumptionTypes = ref([]);
-
+const peserta = ref(0);
+const totalAmount = ref(0);
+const selectedSnacks = ref([]);
 const handleCapacity = (msg) => {
   capacityUpt.value = msg;
 };
+
+function calculateTotalAmount() {
+  totalAmount.value = snackData.value
+    .filter((snack) => selectedSnacks.value.includes(snack.name))
+    .reduce((total, snack) => total + snack.maxPrice, 0);
+}
+
+const amount = computed(() => {
+  return totalAmount.value * peserta.value;
+});
 
 const handleStartMeeting = (msg) => {
   meetingStartTime.value = parseInt(msg);
@@ -33,10 +44,11 @@ const isParticipantCountValid = computed(() => {
   return participantCount.value <= capacityUpt.value;
 });
 
-console.log();
 onMounted(() => {
   getSnack();
-  console.log(meetingStartTime.value, meetingEndTime.value);
+  watch(selectedSnacks, (newValue) => {
+    calculateTotalAmount();
+  });
 });
 
 async function getSnack() {
@@ -52,8 +64,6 @@ async function getSnack() {
   } catch (error) {
     console.error("Error during get data:", error);
     throw error;
-  } finally {
-    console.log(snackData.value);
   }
 }
 </script>
@@ -119,6 +129,7 @@ async function getSnack() {
                       type="number"
                       name="participant"
                       id="participant"
+                      v-model="peserta"
                       v-model.number="participantCount"
                       placeholder="Masukan Jumlah Peserta"
                       class="w-100 h-100 border-secondary rounded-3 border-1 font-size-large"
@@ -137,16 +148,16 @@ async function getSnack() {
               <div class="konsumsi">
                 <h3 class="font-size-large fw-semibold">Jenis Konsumsi</h3>
                 <div
-                  v-for="snack in consumptionTypes"
-                  :key="snack.name"
+                  v-for="snack in snackData"
+                  :key="snack.id"
                   class="form-check"
                 >
                   <input
-                    class="form-check-input"
+                    class="form-check-input disabled"
                     type="checkbox"
                     :value="snack.name"
+                    v-model="selectedSnacks"
                     :id="snack.name.trim().toLowerCase()"
-                    :disabled="snack.disabled"
                   />
                   <label
                     class="form-check-label"
@@ -170,13 +181,24 @@ async function getSnack() {
                     name="amountKonsumsi"
                     id="amountKonsumsi"
                     class="form-control"
-                    value="0"
+                    v-model="amount"
                     aria-label="Konsumsi"
                     aria-describedby="basic-addon1"
                   />
                 </div>
               </div>
             </div>
+          </div>
+
+          <p class="w-100 m-0 barrier border"></p>
+
+          <div class="wrapper-btn d-flex gap-3 justify-content-end">
+            <button class="btn cancel bg-white text-danger font-size-large">
+              batal
+            </button>
+            <button class="btn submit btn-primary text-white font-size-large">
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -216,5 +238,9 @@ p {
 }
 .home-link {
   color: #9e9e9e;
+}
+.wrapper-btn button.cancel:hover {
+  background-color: #dc2626;
+  color: white;
 }
 </style>
