@@ -1,0 +1,165 @@
+// Override Bootstrap variables down here
+
+$font-family-base: "Open Sans", sans-serif;
+// Colors
+$primary: #4a8394;
+// $secondary: #;
+$success: rgba(0, 163, 233, 1);
+$info: rgba(0, 163, 233, 1);
+$warning: #f59e0b;
+$danger: #dc2626;
+// $light: #;
+// $dark: #;
+$font-size-xs: 0.625rem;
+$font-size-sm: 0.6875rem;
+$font-size-md: 0.75rem;
+$font-size-lg: 0.875rem;
+$font-size-xl: 1.125rem;
+.font-size-smaller {
+  font-size: $font-size-xs;
+}
+.font-size-small {
+  font-size: $font-size-sm;
+}
+.font-size-medium {
+  font-size: $font-size-md;
+}
+.font-size-large {
+  font-size: $font-size-lg;
+}
+.font-size-larger {
+  font-size: $font-size-xl;
+}
+
+// input
+$input-padding-y: 0.75rem;
+$input-padding-x: 0.75rem;
+$input-font-size: $font-size-lg;
+
+// Button
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1rem;
+$btn-font-family: "Open Sans", sans-serif;
+$btn-font-size: $font-size-lg;
+// $btn-line-height: 0.5;
+$btn-padding-y-sm: 0.6rem;
+$btn-padding-x-sm: 1rem;
+$btn-font-size-sm: smaller;
+$btn-font-size-lg: medium;
+// $btn-border-width: 1.25px;
+$btn-font-weight: 600;
+$btn-link-color: green;
+$btn-link-hover-color: white;
+$btn-link-disabled-color: black;
+$btn-border-radius: 8px;
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap"; // Custom styles
+
+:root {
+  --color-primary-50: #f2f7f9;
+  --color-primary-100: #deecef;
+  --color-primary-200: #c1dae0;
+  --color-primary-300: #96c0ca;
+  --color-primary-400: #649cac;
+  --color-primary-500: #4a8394;
+  --color-primary-600: #3f6a7b;
+  --color-primary-700: #385866;
+  --color-primary-800: #344b56;
+  --color-primary-900: #2f414a;
+  --color-primary-950: #1b2931;
+}
+
+// Background Primary Color Shade
+.bg-primary-50 {
+  background-color: var(--color-primary-50);
+}
+
+.bg-primary-100 {
+  background-color: var(--color-primary-100);
+}
+
+.bg-primary-200 {
+  background-color: var(--color-primary-200);
+}
+
+.bg-primary-300 {
+  background-color: var(--color-primary-300);
+}
+
+.bg-primary-400 {
+  background-color: var(--color-primary-400);
+}
+
+.bg-primary-500 {
+  background-color: var(--color-primary-500);
+}
+
+.bg-primary-600 {
+  background-color: var(--color-primary-600);
+}
+
+.bg-primary-700 {
+  background-color: var(--color-primary-700);
+}
+
+.bg-primary-800 {
+  background-color: var(--color-primary-800);
+}
+
+.bg-primary-900 {
+  background-color: var(--color-primary-900);
+}
+
+.bg-primary-950 {
+  background-color: var(--color-primary-950);
+}
+
+// Text Primary Color Shade
+.text-primary-50 {
+  color: var(--color-primary-50);
+}
+
+.text-primary-100 {
+  color: var(--color-primary-100);
+}
+
+.text-primary-200 {
+  color: var(--color-primary-200);
+}
+
+.text-primary-300 {
+  color: var(--color-primary-300);
+}
+
+.text-primary-400 {
+  color: var(--color-primary-400);
+}
+
+.text-primary-500 {
+  color: var(--color-primary-500);
+}
+
+.text-primary-600 {
+  color: var(--color-primary-600);
+}
+
+.text-primary-700 {
+  color: var(--color-primary-700);
+}
+
+.text-primary-800 {
+  color: var(--color-primary-800);
+}
+
+.text-primary-900 {
+  color: var(--color-primary-900);
+}
+
+.text-primary-950 {
+  color: var(--color-primary-950);
+}
+
+.dasar {
+  background: #f2f2f2;
+}
