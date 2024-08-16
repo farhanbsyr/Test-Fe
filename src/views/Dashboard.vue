@@ -52,14 +52,10 @@
               </div>
               <div class="col-4 font-size-smaller">Diagramnya</div>
             </div>
-            <div
-              v-for="(amount, index) in room.totalConsumption"
-              :key="index + 1"
-              class="nominal"
-            >
+            <div class="nominal">
               <p class="m-0 font-size-small">Nominal Konsumsi</p>
               <h1 class="font-size-larger fw-bolder">
-                {{ amount.totalPrice }}
+                {{ nominalTotal(room.totalConsumption) }}
               </h1>
             </div>
             <div
@@ -68,7 +64,9 @@
               class="amount-snack d-flex flex-column gap-1"
             >
               <div class="snack-group row">
-                <h5 class="font-size-small fw-semibold col">
+                <h5
+                  class="font-size-small m-0 align-self-center fw-semibold col"
+                >
                   {{ snack.name }}
                 </h5>
                 <div class="amount col">
@@ -102,6 +100,17 @@ import { computed, onMounted, ref } from "vue";
 const toogleMonth = ref(false);
 const usedData = ref([]);
 
+const nominalTotal = (nominal) => {
+  return nominal.reduce((total, item) => total + parseInt(item.totalPrice), 0);
+};
+
+const packageTotal = (consumptions) => {
+  return consumptions.reduce(
+    (total, item) => total + parseInt(item.totalPackage),
+    0
+  );
+};
+
 onMounted(() => {
   getUsed();
   console.log(usedData);
@@ -123,14 +132,6 @@ async function getUsed() {
     console.log(usedData.value);
   }
 }
-
-const packageTotal = (consumptions) => {
-  return consumptions.reduce(
-    (total, item) => total + parseInt(item.totalPackage),
-    0
-  );
-};
-console.log(packageTotal);
 </script>
 
 <style scoped>
