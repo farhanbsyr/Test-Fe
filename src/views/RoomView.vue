@@ -3,13 +3,12 @@ import SideBar from "@/components/SideBar.vue";
 import UnitRoom from "@/components/Form/RuangMeeting/UnitRoom.vue";
 import { RouterLink } from "vue-router";
 import DetailDateVue from "../components/Form/DetailDate.vue";
-import Konsumsi from "../components/Konsumsi.vue";
+
 import Title from "@/components/Title.vue";
 import { computed, onMounted, watch, reactive, ref } from "vue";
 import axios from "axios";
 import Navbar from "@/components/Navbar.vue";
 
-const unit = reactive({});
 const capacityUpt = ref(0);
 const participantCount = ref(0);
 const snackData = ref([]);

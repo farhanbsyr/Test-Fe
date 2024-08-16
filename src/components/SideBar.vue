@@ -1,15 +1,17 @@
 <template>
   <div class="bg-white sidebar d-flex flex-column justify-content-start">
-    <div class="wrapper-icon home-place">
+    <router-link to="/dashboard" class="wrapper-icon home-place">
       <img src="../assets/images/home.svg" alt="dashboard" />
-    </div>
+    </router-link>
     <div class="wrapper-icon file-place bg-primary">
       <img src="../assets/images/file.svg" alt="room meeting" />
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { RouterLink } from "vue-router";
+</script>
 
 <style scoped>
 .sidebar {

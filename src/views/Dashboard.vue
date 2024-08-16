@@ -27,8 +27,8 @@
           </ul>
         </div>
       </div>
-      <div v-for="data in filteredData" :key="data.id" class="row">
-        <div v-for="(item, index) in data.data" :key="index + 1" class="col-2">
+      <div v-for="data in usedData" :key="data.id" class="row">
+        <div v-for="(item, index) in data.data" :key="index + 1" class="col">
           <div class="title-unit align-items-center d-flex gap-2">
             <div class="icon-unit d-flex justify-content-center">
               <img src="../assets/images/unit-icon.svg" alt="icon unit" />
@@ -88,17 +88,6 @@ import { computed, onMounted, ref } from "vue";
 
 const toogleMonth = ref(false);
 const usedData = ref([]);
-
-function addTotalPriceToObjects(totalConsumption) {
-  const totalPrice = totalConsumption.reduce(
-    (acc, item) => acc + Number(item.totalPrice || 0),
-    0
-  );
-  return totalConsumption.map((item) => ({
-    ...item,
-    totalPriceSum: totalPrice,
-  }));
-}
 
 onMounted(() => {
   getUsed();
