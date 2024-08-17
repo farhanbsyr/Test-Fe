@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex wrapper-title justify-content-start gap-3">
-    <div class="wrapper-icon bg-primary">
+    <button @click="goBack" class="wrapper-icon border-0 bg-primary">
       <img src="../assets/images/left-arrow.svg" alt="arrow-back" />
-    </div>
+    </button>
     <div class="title">
       <h1 class="fs-3 fw-bolder m-0 mb-1">Ruang Meeting</h1>
       <nav>
@@ -28,6 +28,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const goBack = () => {
+  router.back();
+};
+</script>
 
 <style></style>
