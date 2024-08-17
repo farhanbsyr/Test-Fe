@@ -1,10 +1,10 @@
 <template>
   <div>
-    <nav class="d-flex wrapper-dashboard">
+    <nav class="d-flex align-items-center gap-3 wrapper-dashboard">
       <div>
         <img src="../assets/images/logo-dashboard.svg" alt="" />
       </div>
-      <h1 class="font-size-larger fw-bold">DASHBOARD</h1>
+      <h1 class="font-size-larger fw-bold m-0">DASHBOARD</h1>
     </nav>
     <div class="content gap-4 d-flex flex-column wrapper-content">
       <div class="filter-mounth">
@@ -44,17 +44,23 @@
               <div class="title-room font-size-large">{{ room.roomName }}</div>
               <div class="presentas row">
                 <div class="text-jumlah col-8">
-                  <p class="m-0 font-size-small">Persentase Pemakaian</p>
+                  <p class="m-0 font-size-smaller dashboard-sec">
+                    Persentase Pemakaian
+                  </p>
                   <h1 class="font-size-larger fw-bolder">
                     {{
-                      (room.averageOccupancyPerMonth / room.capacity).toFixed(2)
+                      converPercent(
+                        room.averageOccupancyPerMonth / room.capacity
+                      )
                     }}
                   </h1>
                 </div>
                 <div class="col-4 font-size-smaller">Diagramnya</div>
               </div>
               <div class="nominal">
-                <p class="m-0 font-size-small">Nominal Konsumsi</p>
+                <p class="m-0 font-size-small dashboard-sec">
+                  Nominal Konsumsi
+                </p>
                 <h1 class="font-size-larger fw-bolder">
                   {{ formattedNominal(nominalTotal(room.totalConsumption)) }}
                 </h1>
@@ -119,10 +125,23 @@ const packageTotal = (consumptions) => {
   );
 };
 
+const converPercent = (number) => {
+  return `${(number * 100).toFixed(2)}%`;
+};
+
+const sliderStyle = (value) => {
+  const percent = (value / 100) * 255;
+  const color = `rgb(${255 - percent}, ${percent}, 0)`;
+
+  return {
+    background: `linear-gradient(to right, ${color} 0%, ${color} ${value}%, #ddd ${value}%, #ddd 100%)`,
+  };
+};
+
 onMounted(() => {
   getUsed();
-  console.log(usedData);
 });
+
 async function getUsed() {
   try {
     const response = await axios.get(
@@ -164,9 +183,5 @@ async function getUsed() {
   padding: 12px;
   gap: 12px;
 }
-.slider {
-  border-radius: 2px;
-  color: #00a3e9;
-  background: black;
-}
+/* slide */
 </style>

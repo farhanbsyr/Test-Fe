@@ -2,15 +2,18 @@
 import SideBar from "@/components/SideBar.vue";
 import { RouterLink } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
+import SideModal from "@/components/SideModal.vue";
 </script>
 
 <template>
-  <div>
+  <div class="position-relative">
     <Navbar />
+
     <main class="d-flex">
-      <div class="sidebar">
+      <div class="sidebar position-relative">
         <SideBar />
       </div>
+
       <div class="wrapper-meeting w-100">
         <!-- title -->
         <div

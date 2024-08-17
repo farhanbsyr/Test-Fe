@@ -70,11 +70,11 @@ async function getSnack() {
 <template>
   <div>
     <Navbar />
-    <main class="h-100 d-flex">
+    <main class="h-100 w-100 d-flex">
       <div class="sidebar">
         <SideBar />
       </div>
-      <div class="wrapper-meeting">
+      <div class="wrapper-meeting w-100">
         <Title />
 
         <!-- content -->
