@@ -14,12 +14,36 @@ const participantCount = ref(0);
 const snackData = ref([]);
 const meetingStartTime = ref(0);
 const meetingEndTime = ref(0);
-const peserta = ref(0);
 const totalAmount = ref(0);
 const selectedSnacks = ref([]);
 const unit = ref("");
 const room = ref("");
 const dateEmit = ref("");
+const validateForm = () => {
+  errors.capacity = capacityUpt.value ? "" : "Kapasitas harus diisi";
+  errors.participantCount = participantCount.value
+    ? ""
+    : "Jumlah peserta harus diisi";
+  errors.startMeeting = meetingStartTime.value
+    ? ""
+    : "Waktu mulai rapat harus diisi";
+  errors.endMeeting = meetingEndTime.value
+    ? ""
+    : "Waktu selesai rapat harus diisi";
+
+  // Tambahkan validasi tambahan sesuai kebutuhan
+  if (participantCount.value > capacityUpt.value) {
+    errors.participantCount = "Jumlah peserta tidak boleh lebih dari kapasitas";
+  }
+  if (
+    meetingStartTime.value &&
+    meetingEndTime.value &&
+    meetingEndTime.value < meetingStartTime.value
+  ) {
+    errors.endMeeting = "Waktu selesai rapat tidak boleh sebelum waktu mulai";
+  }
+};
+
 const handleCapacity = (msg) => {
   capacityUpt.value = msg;
 };
@@ -37,7 +61,7 @@ function calculateTotalAmount() {
 }
 
 const amount = computed(() => {
-  return totalAmount.value * peserta.value;
+  return totalAmount.value * participantCount.value;
 });
 
 const handleStartMeeting = (msg) => {
@@ -102,6 +126,14 @@ watch([meetingStartTime, meetingEndTime], (value) => {
   console.log("Snack Data:", snackData.value);
 });
 
+const handleSubmit = () => {
+  validateForm();
+  if (Object.values(errors).every((error) => !error)) {
+    // Lakukan submit form jika tidak ada error
+    console.log("Form submitted");
+  }
+};
+
 async function getSnack() {
   try {
     const response = await axios.get(
@@ -133,7 +165,10 @@ async function getSnack() {
         <Title />
 
         <!-- content -->
-        <form class="wrapper-room d-flex flex-column border border-1 rounded-2">
+        <form
+          @submit.prevent="handleSubmit"
+          class="wrapper-room d-flex flex-column border border-1 rounded-2"
+        >
           <!-- room -->
           <div class="room-group d-flex flex-column gap-3">
             <h3 class="fs-6 fw-semibold m-0">Informasi Ruang Meeting</h3>
@@ -190,7 +225,6 @@ async function getSnack() {
                       type="number"
                       name="participant"
                       id="participant"
-                      v-model="peserta"
                       v-model.number="participantCount"
                       placeholder="Masukan Jumlah Peserta"
                       class="w-100 h-100 border-secondary rounded-3 border-1 font-size-large"

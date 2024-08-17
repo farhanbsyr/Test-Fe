@@ -64,6 +64,9 @@
                 {{ time }}
               </li>
             </ul>
+            <p v-if="startTimeError" class="error-message">
+              {{ startTimeError }}
+            </p>
           </div>
         </div>
       </div>
