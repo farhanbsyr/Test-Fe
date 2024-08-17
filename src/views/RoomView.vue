@@ -43,20 +43,62 @@ const isParticipantCountValid = computed(() => {
   return participantCount.value <= capacityUpt.value;
 });
 
+const validateSnacks = (snackName) => {
+  if (!meetingStartTime.value) return false;
+  if (!meetingEndTime.value) return false;
+  if (meetingEndTime.value < meetingStartTime.value) {
+    return false;
+  }
+  const isStart = meetingStartTime.value;
+  const isFinish = meetingEndTime.value;
+
+  if (isStart <= 11 && isFinish > 14) {
+    // Sebelum jam 11:00
+    return (
+      snackName === "Snack Siang" ||
+      snackName === "Makan Siang" ||
+      snackName === "Snack Sore"
+    );
+  } else if (isStart <= 11 && isFinish <= 11) {
+    // Setelah jam 14:00
+    return snackName === "Snack Siang";
+  } else if (isStart <= 11 && isFinish <= 14) {
+    // Antara jam 11:00 dan 14:00
+    return snackName === "Makan Siang" || snackName === "Snack Siang";
+  } else if (isStart >= 14 && isFinish > 14) {
+    return snackName === "Snack Sore";
+  } else if (isStart >= 11 && isFinish > 14) {
+    return snackName === "Makan Siang" || snackName === "Snack Sore";
+  } else if (isStart >= 11 && isFinish <= 14) {
+    return snackName === "Makan Siang";
+  }
+  return false;
+};
+
 onMounted(() => {
   getSnack();
   watch(selectedSnacks, (newValue) => {
     calculateTotalAmount();
   });
 });
-
+watch([meetingStartTime, meetingEndTime], (value) => {
+  snackData.value.forEach((snack) => {
+    snack.isDisabled = !validateSnacks(snack.name);
+  });
+  console.log("Meeting Start Time:", meetingStartTime.value);
+  console.log("Meeting End Time:", meetingEndTime.value);
+  console.log("Snack Data:", snackData.value);
+});
 async function getSnack() {
   try {
     const response = await axios.get(
       "https://6686cb5583c983911b03a7f3.mockapi.io/api/dummy-data/masterJenisKonsumsi"
     );
     if (response.status === 200 || response.status === 201) {
-      return (snackData.value = response.data);
+      snackData.value = response.data.map((snack) => ({
+        ...snack,
+        isDisabled: !validateSnacks(snack.name),
+      }));
     } else {
       throw new Error("Failed to Get Data Unit");
     }
@@ -154,6 +196,7 @@ async function getSnack() {
                   <input
                     class="form-check-input disabled"
                     type="checkbox"
+                    :disabled="!validateSnacks(snack.name)"
                     :value="snack.name"
                     v-model="selectedSnacks"
                     :id="snack.name.trim().toLowerCase()"

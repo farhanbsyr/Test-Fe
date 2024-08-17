@@ -38,7 +38,7 @@
             id="startTime"
             v-model="startMeeting"
             placeholder="Pilih Waktu Mulai"
-            class="h-100 flex-grow-1 border-secondary rounded-3 border-0 font-size-large"
+            class="h-100 modal-dialog flex-grow-1 border-secondary rounded-3 border-0 font-size-large"
           />
           <div class="icons d-flex justify-content-center align-items-center">
             <img
@@ -164,6 +164,7 @@ const minDate = computed(() => {
   const dd = String(today.getDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 });
+
 onBeforeMount(() => {
   getCoba();
 });
