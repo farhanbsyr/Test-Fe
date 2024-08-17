@@ -10,9 +10,11 @@
           class="inputs rounded-3 bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            required
             type="date"
             name="date"
             id="date"
+            v-model="date"
             :min="minDate"
             placeholder="Pilih unit"
             class="h-100 flex-grow-1 border-secondary rounded-3 border-0 font-size-large"
@@ -33,6 +35,7 @@
           class="inputs position-relative rounded-3 bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            required
             type="text"
             name="startTime"
             id="startTime"
@@ -78,6 +81,7 @@
           class="inputs position-relative rounded-3 bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            required
             type="text"
             name="endTime"
             id="endTime"
@@ -124,13 +128,17 @@
 import axios from "axios";
 import { computed, watch, defineEmits, onBeforeMount, ref } from "vue";
 
-const emit = defineEmits(["update:startMeeting", "update:finishMeeting"]);
+const emit = defineEmits([
+  "update:startMeeting",
+  "update:finishMeeting",
+  "update:date",
+]);
 
 const isTimeStart = ref(false);
 const isTimeFinish = ref(false);
 const startMeeting = ref(0);
 const finishMeeting = ref(0);
-const cobaData = ref([]);
+const date = ref("");
 const meetingTime = ref([
   "10.00",
   "11.00",
@@ -165,10 +173,6 @@ const minDate = computed(() => {
   return `${yyyy}-${mm}-${dd}`;
 });
 
-onBeforeMount(() => {
-  getCoba();
-});
-
 watch(startMeeting, (newValue) => {
   emit("update:startMeeting", newValue);
 });
@@ -177,23 +181,9 @@ watch(finishMeeting, (newValue) => {
   emit("update:finishMeeting", newValue);
 });
 
-async function getCoba() {
-  try {
-    const response = await axios.get(
-      "https://6686cb5583c983911b03a7f3.mockapi.io/api/dummy-data/masterJenisKonsumsi"
-    );
-    if (response.status === 200 || response.status === 201) {
-      return (cobaData.value = response);
-    } else {
-      throw new Error("Failed to Get Data Unit");
-    }
-  } catch (error) {
-    console.error("Error during get data:", error);
-    throw error;
-  } finally {
-    console.log(cobaData.value);
-  }
-}
+watch(date, (newValue) => {
+  emit("update:date", newValue);
+});
 </script>
 
 <style scoped>

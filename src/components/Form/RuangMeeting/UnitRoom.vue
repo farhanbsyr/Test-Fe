@@ -9,6 +9,7 @@
           class="inputs rounded-3 position-relative bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            required
             type="text"
             name="unit"
             id="unit"
@@ -41,6 +42,9 @@
             </ul>
           </div>
         </div>
+        <span v-if="isUnitValid" class="text-danger font-size-large fw-semibold"
+          >This field cannot be empty</span
+        >
       </div>
     </div>
     <!-- end unit -->
@@ -56,6 +60,7 @@
           class="inputs rounded-3 bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            required
             type="text"
             name="roomMeeting"
             id="roomMeeting"
@@ -86,6 +91,9 @@
             </ul>
           </div>
         </div>
+        <span v-if="isRoomValid" class="text-danger font-size-large fw-semibold"
+          >This field cannot be empty</span
+        >
       </div>
     </div>
     <!-- end ruang meeting -->
@@ -96,9 +104,11 @@
 import axios from "axios";
 import { computed, onBeforeMount, onMounted, ref, watch } from "vue";
 
-const emit = defineEmits(["update:capacity"]);
+const emit = defineEmits(["update:capacity", "update:unit", "update:room"]);
 const isMenuOpen = ref(false);
 const isRoomOpen = ref(false);
+const isUnitValid = ref(false);
+const isRoomValid = ref(false);
 const unitData = ref([]);
 const roomData = ref([]);
 const unit = ref("");
@@ -107,9 +117,12 @@ const capacityData = ref(0);
 
 const handleUnit = (msg) => {
   unit.value = msg;
+  emit("update:unit", unit.value);
 };
+
 const handleRoom = (msg) => {
   room.value = msg;
+  emit("update:room", room.value);
 };
 
 const filteredRoom = computed(() =>

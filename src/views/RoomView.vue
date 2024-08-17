@@ -17,8 +17,17 @@ const meetingEndTime = ref(0);
 const peserta = ref(0);
 const totalAmount = ref(0);
 const selectedSnacks = ref([]);
+const unit = ref("");
+const room = ref("");
+const dateEmit = ref("");
 const handleCapacity = (msg) => {
   capacityUpt.value = msg;
+};
+const handleUnitUpdate = (msg) => {
+  unit.value = msg;
+};
+const handleRoomUpdate = (msg) => {
+  room.value = msg;
 };
 
 function calculateTotalAmount() {
@@ -37,6 +46,9 @@ const handleStartMeeting = (msg) => {
 
 const handleFinishMeeting = (msg) => {
   meetingEndTime.value = parseInt(msg);
+};
+const handleDate = (msg) => {
+  dateEmit.value = parseInt(msg);
 };
 
 const isParticipantCountValid = computed(() => {
@@ -89,6 +101,7 @@ watch([meetingStartTime, meetingEndTime], (value) => {
   console.log("Meeting End Time:", meetingEndTime.value);
   console.log("Snack Data:", snackData.value);
 });
+
 async function getSnack() {
   try {
     const response = await axios.get(
@@ -120,11 +133,15 @@ async function getSnack() {
         <Title />
 
         <!-- content -->
-        <div class="wrapper-room d-flex flex-column border border-1 rounded-2">
+        <form class="wrapper-room d-flex flex-column border border-1 rounded-2">
           <!-- room -->
           <div class="room-group d-flex flex-column gap-3">
             <h3 class="fs-6 fw-semibold m-0">Informasi Ruang Meeting</h3>
-            <UnitRoom @update:capacity="handleCapacity" />
+            <UnitRoom
+              @update:capacity="handleCapacity"
+              @update:unit="handleUnitUpdate"
+              @update:room="handleRoomUpdate"
+            />
 
             <!-- kapasitas -->
             <div class="kapasistas">
@@ -136,6 +153,7 @@ async function getSnack() {
                   class="inputs rounded-3 z-1 bg-transparent border-0 d-flex align-items-center"
                 >
                   <input
+                    required
                     type="text"
                     name="capacity"
                     id="capacity"
@@ -156,6 +174,7 @@ async function getSnack() {
               <DetailDateVue
                 @update:startMeeting="handleStartMeeting"
                 @update:finishMeeting="handleFinishMeeting"
+                @update:date="handleDate"
               />
 
               <!-- Jumlah Peserta -->
@@ -167,6 +186,7 @@ async function getSnack() {
 
                   <div class="inputs">
                     <input
+                      required
                       type="number"
                       name="participant"
                       id="participant"
@@ -219,6 +239,7 @@ async function getSnack() {
                 <div class="input-group inputs mb-3">
                   <span class="input-group-text" id="basic-addon1">Rp.</span>
                   <input
+                    required
                     type="number"
                     name="amountKonsumsi"
                     id="amountKonsumsi"
@@ -238,11 +259,14 @@ async function getSnack() {
             <button class="btn cancel bg-white text-danger font-size-large">
               batal
             </button>
-            <button class="btn submit btn-primary text-white font-size-large">
+            <button
+              type="submit"
+              class="btn submit btn-primary text-white font-size-large"
+            >
               Submit
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </main>
   </div>
