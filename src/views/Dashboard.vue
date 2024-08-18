@@ -15,20 +15,27 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Select Bulan
+            {{
+              loading
+                ? "loading..."
+                : monthT.length > 0
+                ? monthT
+                : "Select Month"
+            }}
           </button>
           <ul class="dropdown-menu w-100">
-            <li @click="toogleMonth = false">
-              <a class="dropdown-item" href="#">Januari</a>
-            </li>
-            <li @click="toogleMonth = true">
-              <a class="dropdown-item" href="#">Febuari</a>
+            <li
+              v-for="(month, index) in selectMonth"
+              :key="index"
+              @click="filteredMonth(index), handleMonth(month)"
+            >
+              <a class="dropdown-item" href="#">{{ month }}</a>
             </li>
           </ul>
         </div>
       </div>
-      <div v-for="data in usedData" :key="data.id" class="row">
-        <div v-for="(item, index) in data.data" :key="index + 1" class="col">
+      <div class="row">
+        <div v-for="(item, index) in monthUsed" :key="index + 1" class="col">
           <div class="title-unit align-items-center d-flex gap-2 mb-1">
             <div class="icon-unit d-flex justify-content-center">
               <img src="../assets/images/unit-icon.svg" alt="icon unit" />
@@ -103,10 +110,30 @@
 
 <script setup>
 import axios from "axios";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
-const toogleMonth = ref(false);
 const usedData = ref([]);
+const monthT = ref("");
+const selectMonth = ["Januari", "Febuari"];
+const monthUsed = ref([]);
+const loading = ref(false);
+const handleMonth = (value) => {
+  monthT.value = value;
+};
+
+const filteredMonth = (month) => {
+  if (month === "Januari") {
+    monthUsed.value = usedData.value[0] ? usedData.value[0].data : [];
+  } else if (month === "Febuari") {
+    monthUsed.value = usedData.value[1] ? usedData.value[1].data : [];
+  } else {
+    monthUsed.value = [];
+  }
+};
+
+watch(monthT, (newMonth) => {
+  filteredMonth(newMonth);
+});
 
 const nominalTotal = (nominal) => {
   return nominal.reduce((total, item) => total + parseInt(item.totalPrice), 0);
@@ -129,21 +156,13 @@ const converPercent = (number) => {
   return `${(number * 100).toFixed(2)}%`;
 };
 
-const sliderStyle = (value) => {
-  const percent = (value / 100) * 255;
-  const color = `rgb(${255 - percent}, ${percent}, 0)`;
-
-  return {
-    background: `linear-gradient(to right, ${color} 0%, ${color} ${value}%, #ddd ${value}%, #ddd 100%)`,
-  };
-};
-
 onMounted(() => {
   getUsed();
 });
 
 async function getUsed() {
   try {
+    loading.value = true;
     const response = await axios.get(
       "https://6686cb5583c983911b03a7f3.mockapi.io/api/dummy-data/summaryBookings"
     );
@@ -156,7 +175,7 @@ async function getUsed() {
     console.error("Error during get data:", error);
     throw error;
   } finally {
-    console.log(usedData.value);
+    loading.value = false;
   }
 }
 </script>
