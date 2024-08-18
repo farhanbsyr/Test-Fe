@@ -6,13 +6,7 @@ import SideBar from "./components/SideBar.vue";
 
 <template>
   <div class="coba w-100">
-    <Navbar />
-    <main class="h-100 tes d-flex justify-content-start">
-      <div class="sidebar">
-        <SideBar />
-      </div>
-      <RouterView />
-    </main>
+    <RouterView />
   </div>
 </template>
 
