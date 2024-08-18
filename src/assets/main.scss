@@ -33,10 +33,10 @@ $font-size-xl: 1.125rem;
 .dashboard-sec {
   color: #625b71;
 }
-// input
-$input-padding-y: 0.75rem;
-$input-padding-x: 0.75rem;
-$input-font-size: $font-size-lg;
+
+$input-border-width: 0;
+$input-border-color: transparent;
+$input-box-shadow: none;
 
 // Button
 $btn-padding-y: 0.75rem;

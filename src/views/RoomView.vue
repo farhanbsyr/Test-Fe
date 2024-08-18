@@ -189,11 +189,12 @@ async function getSnack() {
                 >
                   <input
                     required
+                    disabled
                     type="text"
                     name="capacity"
                     id="capacity"
                     v-model="capacityUpt"
-                    class="h-100 text-black flex-grow-1 z-3 bg-secondary border-secondary rounded-3 border-0 font-size-large"
+                    class="h-100 text-black flex-grow-1 z-3 rounded-3 border-0 font-size-large"
                   />
                 </div>
               </div>
@@ -273,6 +274,7 @@ async function getSnack() {
                 <div class="input-group inputs mb-3">
                   <span class="input-group-text" id="basic-addon1">Rp.</span>
                   <input
+                    disabled
                     required
                     type="number"
                     name="amountKonsumsi"
@@ -342,5 +344,8 @@ p {
 .wrapper-btn button.cancel:hover {
   background-color: #dc2626;
   color: white;
+}
+#capacity {
+  background: #d3d3d3;
 }
 </style>

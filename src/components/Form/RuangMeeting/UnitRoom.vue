@@ -9,11 +9,12 @@
           class="inputs rounded-3 position-relative bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            readonly
             required
             type="text"
             name="unit"
             id="unit"
-            placeholder="Pilih unit"
+            :placeholder="loadingUnit ? 'Loading...' : 'Pilih Unit'"
             v-model="unit"
             class="h-100 flex-grow-1 border-secondary rounded-3 border-0 font-size-large"
           />
@@ -60,12 +61,13 @@
           class="inputs rounded-3 bg-transparent border-secondary border border-1 border-black d-flex align-items-center"
         >
           <input
+            readonly
             required
             type="text"
             name="roomMeeting"
             id="roomMeeting"
             v-model="room"
-            placeholder="Pilih unit"
+            :placeholder="loadingRoom ? 'Loading....' : 'Pilih Ruang Meeting'"
             class="h-100 flex-grow-1 border-secondary rounded-3 border-0 font-size-large"
           />
           <div class="icons d-flex justify-content-center align-items-center">
@@ -114,6 +116,8 @@ const roomData = ref([]);
 const unit = ref("");
 const room = ref("");
 const capacityData = ref(0);
+const loadingUnit = ref(false);
+const loadingRoom = ref(false);
 
 const handleUnit = (msg) => {
   unit.value = msg;
@@ -130,6 +134,22 @@ const filteredRoom = computed(() =>
     (item) => item.officeName.toLowerCase() == unit.value.toLowerCase()
   )
 );
+
+watch(unit, (newUnit) => {
+  getRoom();
+
+  // Check if the current room is valid for the new unit
+  const isRoomValidForUnit = filteredRoom.value.some(
+    (roomItem) => roomItem.roomName.toLowerCase() === room.value.toLowerCase()
+  );
+
+  if (!isRoomValidForUnit) {
+    // If no room matches the current unit, reset room
+    room.value = "";
+    emit("update:room", room.value);
+  }
+});
+
 const filteredCapacity = computed(
   () =>
     roomData.value.find(
@@ -142,16 +162,13 @@ watch(filteredCapacity, (newCapacity) => {
   emit("update:capacity", newCapacity);
 });
 
-watch(unit, () => {
-  getRoom();
-});
-
 onBeforeMount(() => {
   getUnit();
 });
 
 async function getUnit() {
   try {
+    loadingUnit.value = true;
     const response = await axios.get(
       "https://6666c7aea2f8516ff7a4e261.mockapi.io/api/dummy-data/masterOffice"
     );
@@ -163,11 +180,14 @@ async function getUnit() {
   } catch (error) {
     console.error("Error during get data:", error);
     throw error;
+  } finally {
+    loadingUnit.value = false;
   }
 }
 
 async function getRoom() {
   try {
+    loadingRoom.value = true;
     const response = await axios.get(
       "https://6666c7aea2f8516ff7a4e261.mockapi.io/api/dummy-data/masterMeetingRooms"
     );
@@ -180,7 +200,7 @@ async function getRoom() {
     console.error("Error during get Room:", error);
     throw error;
   } finally {
-    console.log(roomData.value);
+    loadingRoom.value = false;
   }
 }
 </script>
