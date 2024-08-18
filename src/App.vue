@@ -6,11 +6,20 @@ import SideBar from "./components/SideBar.vue";
 
 <template>
   <div class="coba w-100">
-    <RouterView />
+    <Navbar />
+    <main class="h-100 tes d-flex justify-content-start">
+      <div class="sidebar">
+        <SideBar />
+      </div>
+      <RouterView />
+    </main>
   </div>
 </template>
 
 <style>
+.sidebar {
+  box-shadow: 4px 0px 20px 0px rgba(106, 106, 106, 0.1);
+}
 .wrapper-icon {
   width: 42px;
   height: 42px;
@@ -19,7 +28,9 @@ import SideBar from "./components/SideBar.vue";
   justify-content: center;
   align-items: center;
 }
-
+.tes {
+  gap: 28px;
+}
 .icons {
   width: 18px;
   height: 18px;

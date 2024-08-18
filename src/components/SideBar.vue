@@ -39,6 +39,8 @@ const hideModal = () => {
   width: 72px;
   box-shadow: 4px 0px 20px 0px rgba(106, 106, 106, 0.1);
   gap: 12px;
+  z-index: 100;
+  min-height: 100vh;
   transition: width 0.3s ease;
 }
 
