@@ -52,4 +52,9 @@ import SideBar from "./components/SideBar.vue";
   color: white;
   cursor: pointer;
 }
+
+.chart-container {
+  background-color: #eee8d5;
+  border-radius: 0.5rem;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="dashboard">
     <nav
       class="d-flex justify-content-between align-items-center gap-3 wrapper-dashboard"
     >
@@ -72,7 +72,17 @@
                     }}
                   </h1>
                 </div>
-                <div class="col-4 font-size-smaller">Diagramnya</div>
+                <div
+                  class="chart-container col-4 custom-chart font-size-smaller"
+                >
+                  <DoughnutChart
+                    :chart-data="
+                      formattedChartData(
+                        room.averageOccupancyPerMonth / room.capacity
+                      )
+                    "
+                  />
+                </div>
               </div>
               <div class="nominal">
                 <p class="m-0 font-size-small dashboard-sec">
@@ -115,13 +125,46 @@
         </div>
       </div>
     </div>
+    <DoughnutChart :chart-data="testData" />
   </div>
 </template>
 
 <script setup>
 import axios from "axios";
 import { RouterLink } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { DoughnutChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
+
+const formattedChartData = (value) => {
+  const data = [converPercent(value) || 0];
+  console.log("Chart data:", data);
+  return {
+    labels: ["iya"],
+    datasets: [
+      {
+        data: data,
+        backgroundColor: ["#FF6384"], // Adjust colors as needed
+      },
+    ],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // Set ke false untuk mengatur ukuran chart dengan CSS
+    },
+  };
+};
+
+const testData = {
+  labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+  datasets: [
+    {
+      data: [30, 40, 60, 70, 5],
+      backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"],
+    },
+  ],
+};
 
 const usedData = ref([]);
 const monthT = ref("");
@@ -212,6 +255,11 @@ async function getUsed() {
   background-color: #f2f2f2;
   padding: 12px;
   gap: 12px;
+}
+.chart-container {
+  width: 30px; /* Atur lebar sesuai kebutuhan */
+  height: 30px; /* Atur tinggi sesuai kebutuhan */
+  position: relative;
 }
 /* slide */
 </style>
