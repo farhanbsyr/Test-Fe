@@ -19,6 +19,12 @@ const selectedSnacks = ref([]);
 const unit = ref("");
 const room = ref("");
 const dateEmit = ref("");
+const errors = reactive({
+  capacity: "",
+  participantCount: "",
+  startMeeting: "",
+  endMeeting: "",
+});
 const validateForm = () => {
   errors.capacity = capacityUpt.value ? "" : "Kapasitas harus diisi";
   errors.participantCount = participantCount.value
@@ -60,10 +66,6 @@ function calculateTotalAmount() {
     .reduce((total, snack) => total + snack.maxPrice, 0);
 }
 
-const amount = computed(() => {
-  return totalAmount.value * participantCount.value;
-});
-
 const handleStartMeeting = (msg) => {
   meetingStartTime.value = parseInt(msg);
 };
@@ -74,10 +76,6 @@ const handleFinishMeeting = (msg) => {
 const handleDate = (msg) => {
   dateEmit.value = parseInt(msg);
 };
-
-const isParticipantCountValid = computed(() => {
-  return participantCount.value <= capacityUpt.value;
-});
 
 const validateSnacks = (snackName) => {
   if (!meetingStartTime.value) return false;
@@ -111,6 +109,14 @@ const validateSnacks = (snackName) => {
   return false;
 };
 
+const isParticipantCountValid = computed(() => {
+  return participantCount.value <= capacityUpt.value;
+});
+
+const amount = computed(() => {
+  return totalAmount.value * participantCount.value;
+});
+
 onMounted(() => {
   getSnack();
   watch(selectedSnacks, (newValue) => {
@@ -126,8 +132,30 @@ watch([meetingStartTime, meetingEndTime], (value) => {
 const handleSubmit = () => {
   validateForm();
   if (Object.values(errors).every((error) => !error)) {
-    // Lakukan submit form jika tidak ada error
-    console.log("Form submitted");
+    // Simulasi pengiriman data atau proses
+    console.log("Form submitted successfully");
+
+    // Reset semua inputan
+    capacityUpt.value = 0;
+    participantCount.value = 0;
+    meetingStartTime.value = 0;
+    meetingEndTime.value = 0;
+    selectedSnacks.value = [];
+    unit.value = "";
+    room.value = "";
+    dateEmit.value = "";
+
+    // Mengosongkan data snack
+    snackData.value = [];
+
+    // Reset total amount
+    totalAmount.value = 0;
+
+    // Opsional: Berikan feedback kepada pengguna
+    alert("Form berhasil disubmit!");
+  } else {
+    // Jika ada error, tampilkan feedback atau lakukan tindakan lainnya
+    console.error("Form contains errors.");
   }
 };
 
@@ -153,7 +181,7 @@ async function getSnack() {
 
 <template>
   <form
-    @submit.prevent="handleSubmit"
+    @submit="handleSubmit"
     class="wrapper-room d-flex flex-column border border-1 rounded-2"
   >
     <!-- room -->
