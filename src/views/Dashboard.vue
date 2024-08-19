@@ -1,10 +1,20 @@
 <template>
   <div>
-    <nav class="d-flex align-items-center gap-3 wrapper-dashboard">
-      <div>
-        <img src="../assets/images/logo-dashboard.svg" alt="" />
+    <nav
+      class="d-flex justify-content-between align-items-center gap-3 wrapper-dashboard"
+    >
+      <div class="d-flex align-items-center gap-3">
+        <div class="">
+          <img src="../assets/images/logo-dashboard.svg" alt="" />
+        </div>
+        <h1 class="font-size-larger fw-bold m-0">DASHBOARD</h1>
       </div>
-      <h1 class="font-size-larger fw-bold m-0">DASHBOARD</h1>
+      <router-link
+        to="/"
+        class="icons d-flex justify-content-center align-items-center"
+      >
+        <img src="../assets/images/arrow-ds.svg" alt="arrow" />
+      </router-link>
     </nav>
     <div class="content gap-4 d-flex flex-column wrapper-content">
       <div class="filter-mounth">
@@ -110,6 +120,7 @@
 
 <script setup>
 import axios from "axios";
+import { RouterLink } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 
 const usedData = ref([]);
