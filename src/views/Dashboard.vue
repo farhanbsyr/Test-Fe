@@ -73,7 +73,7 @@
                   </h1>
                 </div>
                 <div
-                  class="chart-container col-4 custom-chart font-size-smaller"
+                  class="d-flex chart-container justify-content-end p-0 col-4 custom-chart font-size-smaller"
                 >
                   <DoughnutChart
                     :chart-data="
@@ -138,14 +138,13 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const formattedChartData = (value) => {
-  const data = [converPercent(value) || 0];
+  const data = [value * 100, 100 - value * 100];
   console.log("Chart data:", data);
   return {
-    labels: ["iya"],
     datasets: [
       {
         data: data,
-        backgroundColor: ["#FF6384"], // Adjust colors as needed
+        backgroundColor: ["#00a3e9", "#cccccc"], // Adjust colors as needed
       },
     ],
   };
