@@ -125,7 +125,6 @@
         </div>
       </div>
     </div>
-    <DoughnutChart :chart-data="testData" />
   </div>
 </template>
 
@@ -149,21 +148,7 @@ const formattedChartData = (value) => {
         backgroundColor: ["#FF6384"], // Adjust colors as needed
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false, // Set ke false untuk mengatur ukuran chart dengan CSS
-    },
   };
-};
-
-const testData = {
-  labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
-  datasets: [
-    {
-      data: [30, 40, 60, 70, 5],
-      backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"],
-    },
-  ],
 };
 
 const usedData = ref([]);
@@ -257,8 +242,8 @@ async function getUsed() {
   gap: 12px;
 }
 .chart-container {
-  width: 30px; /* Atur lebar sesuai kebutuhan */
-  height: 30px; /* Atur tinggi sesuai kebutuhan */
+  width: 50px; /* Atur lebar sesuai kebutuhan */
+  height: 50px; /* Atur tinggi sesuai kebutuhan */
   position: relative;
 }
 /* slide */
