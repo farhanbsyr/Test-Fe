@@ -5,7 +5,7 @@ import { RouterLink } from "vue-router";
 import DetailDateVue from "./Form/DetailDate.vue";
 
 import Title from "@/components/Title.vue";
-import { computed, onMounted, watch, reactive, ref } from "vue";
+import { computed, onMounted, watch, reactive, ref, onBeforeMount } from "vue";
 import axios from "axios";
 import Navbar from "@/components/Navbar.vue";
 
@@ -117,8 +117,11 @@ const amount = computed(() => {
   return totalAmount.value * participantCount.value;
 });
 
-onMounted(() => {
+onBeforeMount(() => {
   getSnack();
+});
+
+onMounted(() => {
   watch(selectedSnacks, (newValue) => {
     calculateTotalAmount();
   });
